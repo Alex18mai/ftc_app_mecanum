@@ -51,24 +51,23 @@ public class Driver_Mode extends LinearOpMode {
         Motor_BL = hardwareMap.dcMotor.get("Motor_BL");
         Motor_BR = hardwareMap.dcMotor.get("Motor_BR");
 
-
         //setare directii
-        Motor_BL.setDirection(DcMotorSimple.Direction.FORWARD);
         Motor_FL.setDirection(DcMotorSimple.Direction.FORWARD);
-        Motor_BR.setDirection(DcMotorSimple.Direction.FORWARD);
         Motor_FR.setDirection(DcMotorSimple.Direction.FORWARD);
+        Motor_BL.setDirection(DcMotorSimple.Direction.FORWARD);
+        Motor_BR.setDirection(DcMotorSimple.Direction.FORWARD);
 
         //setare mod
-        Motor_BL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        Motor_BR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         Motor_FL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         Motor_FR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        Motor_BL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        Motor_BR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         //initializare putere
         Motor_FL.setPower(0);
         Motor_FR.setPower(0);
-        Motor_BR.setPower(0);
         Motor_BL.setPower(0);
+        Motor_BR.setPower(0);
 
     }
 
@@ -86,24 +85,30 @@ public class Driver_Mode extends LinearOpMode {
     protected void stop_walk(){
         Motor_FL.setPower(0);
         Motor_FR.setPower(0);
-        Motor_BR.setPower(0);
         Motor_BL.setPower(0);
+        Motor_BR.setPower(0);
     }
 
     protected void calculateWheelsPower ( double left_X, double left_Y, double right_X )
     {
         double r = Math.hypot(left_X, left_Y);
-        double robotAngle = Math.atan2(left_X, left_Y) - Math.PI / 4;
+        double angle = Math.atan2(left_X, left_Y) - Math.PI / 4;
 
-        double FL = Range.clip(r * Math.cos(robotAngle) + right_X , -0.9 , 0.9);
-        double FR = Range.clip(r * Math.sin(robotAngle) - right_X , -0.9 , 0.9);
-        double BR = Range.clip(r * Math.cos(robotAngle) - right_X , -0.9 , 0.9);
-        double BL = Range.clip(r * Math.sin(robotAngle) + right_X , -0.9 , 0.9);
+        double FL = Range.clip(r * Math.cos(angle) + right_X , -0.9 , 0.9);
+        double FR = Range.clip(r * Math.sin(angle) - right_X , -0.9 , 0.9);
+        double BL = Range.clip(r * Math.sin(angle) + right_X , -0.9 , 0.9);
+        double BR = Range.clip(r * Math.cos(angle) - right_X , -0.9 , 0.9);
+
+        telemetry.addData("FL : " , FL);
+        telemetry.addData("FR : " , FR);
+        telemetry.addData("BL : " , BL);
+        telemetry.addData("BR : " , BR);
+        telemetry.update();
 
         Motor_FL.setPower(FL);
         Motor_FR.setPower(FR);
-        Motor_BR.setPower(BR);
         Motor_BL.setPower(BL);
+        Motor_BR.setPower(BR);
     }
 
     //calculeaza puterile rotilor in functie de stick si apoi aplica rotilor puterea

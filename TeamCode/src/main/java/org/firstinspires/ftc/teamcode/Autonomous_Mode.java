@@ -26,7 +26,6 @@ public abstract class Autonomous_Mode extends LinearOpMode {
         Motor_BL = hardwareMap.dcMotor.get("Motor_BL");
         Motor_BR = hardwareMap.dcMotor.get("Motor_BR");
 
-
         //setare directii
         Motor_BL.setDirection(DcMotorSimple.Direction.FORWARD);
         Motor_FL.setDirection(DcMotorSimple.Direction.FORWARD);
@@ -46,4 +45,18 @@ public abstract class Autonomous_Mode extends LinearOpMode {
         Motor_BL.setPower(0);
 
     }
+
+    protected void walk_encoder(double dist , double angle){
+        //TODO - walk_encoder : mers distanta dist la unghiul angle
+    }
+
+    protected boolean good_color(double angle){
+        //TODO - good_color : return 1 daca e un cub portocaliu , altfel 0
+        return false;
+    }
+
+    protected void walk_color(double angle){
+        //TODO - walk_color : mers pana vad o culoare la unghiul angle
+    }
+
 }
