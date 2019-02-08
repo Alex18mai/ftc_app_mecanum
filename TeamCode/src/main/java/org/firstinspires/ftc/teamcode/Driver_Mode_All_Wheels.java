@@ -1,21 +1,16 @@
 package org.firstinspires.ftc.teamcode;
 
-import android.support.annotation.IntRange;
-
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.Range;
 
-import org.firstinspires.ftc.robotcore.external.Telemetry;
-
 import static java.lang.Math.abs;
 
-@TeleOp (name = "Driver_Mode", group = "Driver")
+@TeleOp (name = "Driver_Mode_All_Wheels", group = "Driver")
 
-public class Driver_Mode extends LinearOpMode {
+public class Driver_Mode_All_Wheels extends LinearOpMode {
 
     //motoare roti
     protected DcMotor Motor_FL = null;
@@ -38,8 +33,11 @@ public class Driver_Mode extends LinearOpMode {
 
         while(opModeIsActive())
         {
-            gamepad_1();
-            //gamepad_2();
+            Motor_FL.setPower(0.9);
+            Motor_FR.setPower(0.9);
+            Motor_BL.setPower(0.9);
+            Motor_BR.setPower(0.9);
+
         }
     }
 

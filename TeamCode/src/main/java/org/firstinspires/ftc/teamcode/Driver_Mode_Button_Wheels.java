@@ -1,21 +1,16 @@
 package org.firstinspires.ftc.teamcode;
 
-import android.support.annotation.IntRange;
-
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.Range;
 
-import org.firstinspires.ftc.robotcore.external.Telemetry;
-
 import static java.lang.Math.abs;
 
-@TeleOp (name = "Driver_Mode", group = "Driver")
+@TeleOp (name = "Driver_Mode_Button_Wheels", group = "Driver")
 
-public class Driver_Mode extends LinearOpMode {
+public class Driver_Mode_Button_Wheels extends LinearOpMode {
 
     //motoare roti
     protected DcMotor Motor_FL = null;
@@ -39,7 +34,6 @@ public class Driver_Mode extends LinearOpMode {
         while(opModeIsActive())
         {
             gamepad_1();
-            //gamepad_2();
         }
     }
 
@@ -72,10 +66,33 @@ public class Driver_Mode extends LinearOpMode {
     }
 
     protected void gamepad_1(){
-        if ( abs(gamepad1.left_stick_x) > deadzone || abs(gamepad1.left_stick_y) > deadzone || abs(gamepad1.right_stick_x) > deadzone)
-            calculateWheelsPower(gamepad1.left_stick_y , gamepad1.left_stick_x , gamepad1.right_stick_x);
-        else
-            stop_walk();
+        if (gamepad1.a){
+            Motor_FL.setPower(0.5);
+        }
+        else{
+            Motor_FL.setPower(0);
+        }
+
+        if (gamepad1.b){
+            Motor_FR.setPower(0.5);
+        }
+        else{
+            Motor_FR.setPower(0);
+        }
+
+        if (gamepad1.x){
+            Motor_BL.setPower(0.5);
+        }
+        else{
+            Motor_BL.setPower(0);
+        }
+
+        if (gamepad1.y){
+            Motor_BR.setPower(0.5);
+        }
+        else{
+            Motor_BR.setPower(0);
+        }
     }
 
     protected void gamepad_2(){

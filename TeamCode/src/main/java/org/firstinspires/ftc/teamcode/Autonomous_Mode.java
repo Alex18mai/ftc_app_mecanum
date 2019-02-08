@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Servo;
 
 public abstract class Autonomous_Mode extends LinearOpMode {
 
@@ -11,6 +12,10 @@ public abstract class Autonomous_Mode extends LinearOpMode {
     protected DcMotor Motor_FR = null;
     protected DcMotor Motor_BL = null;
     protected DcMotor Motor_BR = null;
+
+    //mmotoare servo
+    protected Servo servo_L = null;
+    protected Servo servo_R = null;
 
     //motoare mecanisme
 
@@ -26,13 +31,16 @@ public abstract class Autonomous_Mode extends LinearOpMode {
         Motor_BL = hardwareMap.dcMotor.get("Motor_BL");
         Motor_BR = hardwareMap.dcMotor.get("Motor_BR");
 
+        servo_L = hardwareMap.servo.get("servo_L");
+        servo_R = hardwareMap.servo.get("servo_R");
+
         //setare directii
-        Motor_BL.setDirection(DcMotorSimple.Direction.FORWARD);
+        Motor_BL.setDirection(DcMotorSimple.Direction.REVERSE);
         Motor_FL.setDirection(DcMotorSimple.Direction.FORWARD);
-        Motor_BR.setDirection(DcMotorSimple.Direction.FORWARD);
+        Motor_BR.setDirection(DcMotorSimple.Direction.REVERSE);
         Motor_FR.setDirection(DcMotorSimple.Direction.FORWARD);
 
-        //setare mod
+        //setare
         Motor_BL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         Motor_BR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         Motor_FL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
