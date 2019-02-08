@@ -70,10 +70,6 @@ public class Driver_Mode_All_Wheels extends LinearOpMode {
     }
 
     protected void gamepad_1(){
-        if ( abs(gamepad1.left_stick_x) > deadzone || abs(gamepad1.left_stick_y) > deadzone || abs(gamepad1.right_stick_x) > deadzone)
-            calculateWheelsPower(gamepad1.left_stick_y , gamepad1.left_stick_x , gamepad1.right_stick_x);
-        else
-            stop_walk();
     }
 
     protected void gamepad_2(){
@@ -85,25 +81,6 @@ public class Driver_Mode_All_Wheels extends LinearOpMode {
         Motor_FR.setPower(0);
         Motor_BL.setPower(0);
         Motor_BR.setPower(0);
-    }
-
-    protected void calculateWheelsPower ( double drive, double strafe, double rotate )
-    {
-        double FL = Range.clip(drive + strafe + rotate , -0.7 , 0.7);
-        double FR = Range.clip(drive - strafe - rotate , -0.7 , 0.7);
-        double BL = Range.clip(drive - strafe + rotate , -0.7 , 0.7);
-        double BR = Range.clip(drive + strafe - rotate , -0.7 , 0.7);
-
-        /*telemetry.addData("FL : " , FL);
-        telemetry.addData("FR : " , FR);
-        telemetry.addData("BL : " , BL);
-        telemetry.addData("BR : " , BR);
-        telemetry.update();*/
-
-        Motor_FL.setPower(FL);
-        Motor_FR.setPower(FR);
-        Motor_BL.setPower(BL);
-        Motor_BR.setPower(BR);
     }
 
 }

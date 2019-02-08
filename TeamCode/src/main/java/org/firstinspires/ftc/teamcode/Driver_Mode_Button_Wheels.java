@@ -51,17 +51,17 @@ public class Driver_Mode_Button_Wheels extends LinearOpMode {
         Motor_BL.setDirection(DcMotorSimple.Direction.REVERSE);
         Motor_BR.setDirection(DcMotorSimple.Direction.FORWARD);
 
-        //setare
-        Motor_FL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        Motor_FR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        Motor_BL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        Motor_BR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
         //initializare putere
         Motor_FL.setPower(0);
         Motor_FR.setPower(0);
         Motor_BL.setPower(0);
         Motor_BR.setPower(0);
+
+        //setare
+        Motor_FL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        Motor_FR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        Motor_BL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        Motor_BR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
     }
 
@@ -104,25 +104,6 @@ public class Driver_Mode_Button_Wheels extends LinearOpMode {
         Motor_FR.setPower(0);
         Motor_BL.setPower(0);
         Motor_BR.setPower(0);
-    }
-
-    protected void calculateWheelsPower ( double drive, double strafe, double rotate )
-    {
-        double FL = Range.clip(drive + strafe + rotate , -0.7 , 0.7);
-        double FR = Range.clip(drive - strafe - rotate , -0.7 , 0.7);
-        double BL = Range.clip(drive - strafe + rotate , -0.7 , 0.7);
-        double BR = Range.clip(drive + strafe - rotate , -0.7 , 0.7);
-
-        /*telemetry.addData("FL : " , FL);
-        telemetry.addData("FR : " , FR);
-        telemetry.addData("BL : " , BL);
-        telemetry.addData("BR : " , BR);
-        telemetry.update();*/
-
-        Motor_FL.setPower(FL);
-        Motor_FR.setPower(FR);
-        Motor_BL.setPower(BL);
-        Motor_BR.setPower(BR);
     }
 
 }
