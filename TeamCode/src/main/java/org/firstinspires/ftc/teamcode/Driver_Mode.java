@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -18,15 +19,21 @@ import static java.lang.Math.abs;
 public class Driver_Mode extends LinearOpMode {
 
     //motoare roti
-    protected DcMotor Motor_FL = null;
-    protected DcMotor Motor_FR = null;
-    protected DcMotor Motor_BL = null;
-    protected DcMotor Motor_BR = null;
+    protected DcMotor MotorFL = null;
+    protected DcMotor MotorFR = null;
+    protected DcMotor MotorBL = null;
+    protected DcMotor MotorBR = null;
 
     //motoare mecanisme
-    protected DcMotor Motor_Glisiera_L = null;
-    protected DcMotor Motor_Glisiera_R = null;
+    protected DcMotor MotorGlisieraL = null;
+    protected DcMotor MotorGlisieraR = null;
 
+    //servo
+    protected CRServo ServoPeriiL = null;
+    protected CRServo ServoPeriiR = null;
+    protected Servo ServoAlegereL = null;
+    protected Servo ServoAlegereR = null;
+    
     //constante
     protected final int tics_per_cm = 67;
     protected final double deadzone = 0.1;
@@ -48,36 +55,60 @@ public class Driver_Mode extends LinearOpMode {
     protected void initialise()
     {
         //hardware mapping
-        Motor_FL = hardwareMap.dcMotor.get("Motor_FL");
-        Motor_FR = hardwareMap.dcMotor.get("Motor_FR");
-        Motor_BL = hardwareMap.dcMotor.get("Motor_BL");
-        Motor_BR = hardwareMap.dcMotor.get("Motor_BR");
-        Motor_Glisiera_L = hardwareMap.dcMotor.get("Motor_Glisiera_L");
-        Motor_Glisiera_R = hardwareMap.dcMotor.get("Motor_Glisiera_R");
-
+        MotorFL = hardwareMap.dcMotor.get("MotorFL");
+        MotorFR = hardwareMap.dcMotor.get("MotorFR");
+        MotorBL = hardwareMap.dcMotor.get("MotorBL");
+        MotorBR = hardwareMap.dcMotor.get("MotorBR");
+        MotorGlisieraL = hardwareMap.dcMotor.get("MotorGlisieraL");
+        MotorGlisieraR = hardwareMap.dcMotor.get("MotorGlisieraR");
+        ServoPeriiL = hardwareMap.crservo.get("ServoPeriiL");
+        ServoPeriiR = hardwareMap.crservo.get("ServoPeriiR");
+        ServoAlegereL = hardwareMap.servo.get("ServoAlegereL");
+        ServoAlegereR = hardwareMap.servo.get("ServoAlegereR");
+        
         //initializare putere
-        Motor_FL.setPower(0);
-        Motor_FR.setPower(0);
-        Motor_BL.setPower(0);
-        Motor_BR.setPower(0);
-        Motor_Glisiera_L.setPower(0);
-        Motor_Glisiera_R.setPower(0);
+        MotorFL.setPower(0);
+        MotorFR.setPower(0);
+        MotorBL.setPower(0);
+        MotorBR.setPower(0);
+        MotorGlisieraL.setPower(0);
+        MotorGlisieraR.setPower(0);
 
         //setare directii
-        Motor_FL.setDirection(DcMotorSimple.Direction.REVERSE);
-        Motor_FR.setDirection(DcMotorSimple.Direction.FORWARD);
-        Motor_BL.setDirection(DcMotorSimple.Direction.REVERSE);
-        Motor_BR.setDirection(DcMotorSimple.Direction.FORWARD);
-        Motor_Glisiera_L.setDirection(DcMotorSimple.Direction.REVERSE);
-        Motor_Glisiera_R.setDirection(DcMotorSimple.Direction.FORWARD);
+        MotorFL.setDirection(DcMotorSimple.Direction.REVERSE);
+        MotorFR.setDirection(DcMotorSimple.Direction.FORWARD);
+        MotorBL.setDirection(DcMotorSimple.Direction.REVERSE);
+        MotorBR.setDirection(DcMotorSimple.Direction.FORWARD);
+        MotorGlisieraL.setDirection(DcMotorSimple.Direction.FORWARD);
+        MotorGlisieraR.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        //setare
-        Motor_FL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        Motor_FR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        Motor_BL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        Motor_BR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        Motor_Glisiera_L.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        Motor_Glisiera_R.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        ServoPeriiL.setDirection(DcMotorSimple.Direction.FORWARD);
+        ServoPeriiR.setDirection(DcMotorSimple.Direction.FORWARD);
+        
+        //reset encoder
+        MotorFL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        MotorFR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        MotorBL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        MotorBR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        MotorGlisieraL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        MotorGlisieraR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+
+        //setare encoder
+        MotorFL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        MotorFR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        MotorBL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        MotorBR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        MotorGlisieraL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        MotorGlisieraR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        //setare cand power == 0
+        MotorFL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        MotorFR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        MotorBL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        MotorBR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        MotorGlisieraL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        MotorGlisieraR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
     }
 
@@ -90,40 +121,92 @@ public class Driver_Mode extends LinearOpMode {
 
     protected void gamepad_2(){
         if (gamepad2.a){
-            Rotire_Glisiera_Encoder(0 , 0); //TODO : sa o duca la 90 de grade , viteza mare , pasi caluclati , ai grija la forward si reverse sa nu futa
+            Rotire_Glisiera_Encoder(-2000,0 , 0.5); //TODO : sa o duca la 90 de grade , viteza mare , pasi caluclati , ai grija la forward si reverse sa nu futa
         }
         else if (gamepad2.b){
-            Rotire_Glisiera_Encoder(0 , 0); //TODO : sa o duca la 0 grade (de unde a pornit) , viteza mica , aceeasi pasi calculati dar cu minus
+            Rotire_Glisiera_Encoder(0 , 0 , 0.5); //TODO : sa o duca la 0 grade (de unde a pornit) , viteza mica , aceeasi pasi calculati dar cu minus
         }
+        
+        /*if(gamepad2.left_trigger > deadzone){
+            ServoPeriiL.setPower(gamepad2.left_trigger);
+            ServoPeriiR.setPower(gamepad2.left_trigger);
+        }else if(gamepad2.right_trigger > deadzone){
+            ServoPeriiL.setPower(-gamepad2.right_trigger);
+            ServoPeriiR.setPower(-gamepad2.right_trigger);
+        }else{
+            ServoPeriiL.setPower(0);
+            ServoPeriiR.setPower(0);
+        }*/
+
+        //test_glisiera();
 
     }
 
-    protected void Rotire_Glisiera_Encoder(int pasi , double speed) {
-        Motor_Glisiera_L.setTargetPosition(Motor_Glisiera_L.getCurrentPosition() + pasi * tics_per_cm);
-        Motor_Glisiera_R.setTargetPosition(Motor_Glisiera_R.getCurrentPosition() + pasi * tics_per_cm);
+    protected void Rotire_Glisiera_Encoder(int pos , int pasi , double speed) {
+        MotorGlisieraL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        MotorGlisieraR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        Motor_Glisiera_L.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        Motor_Glisiera_R.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        if (pasi == 0){
+            MotorGlisieraL.setTargetPosition(pos);
+            MotorGlisieraR.setTargetPosition(pos);
+        }
+        else{
+            MotorGlisieraL.setTargetPosition(MotorGlisieraL.getCurrentPosition() + pasi);
+            MotorGlisieraR.setTargetPosition(MotorGlisieraR.getCurrentPosition() + pasi);
+        }
 
-        Motor_Glisiera_L.setPower(speed);
-        Motor_Glisiera_R.setPower(speed);
+        MotorGlisieraL.setPower(speed);
+        MotorGlisieraR.setPower(speed);
 
-        while (Motor_Glisiera_L.isBusy() || Motor_Glisiera_R.isBusy() && opModeIsActive()) {
+        while (MotorGlisieraL.isBusy() || MotorGlisieraR.isBusy() && opModeIsActive()) {
+            telemetry.addData("dir L : " ,  MotorGlisieraL.getDirection());
+            telemetry.addData("dir R : " ,  MotorGlisieraR.getDirection());
+            telemetry.addData("encoder L", MotorGlisieraL.getCurrentPosition());
+            telemetry.addData("encoder R", MotorGlisieraR.getCurrentPosition());
+            telemetry.update();
             idle();
         }
 
-        Motor_Glisiera_L.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        Motor_Glisiera_R.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        MotorGlisieraL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        MotorGlisieraR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        Motor_Glisiera_L.setPower(0);
-        Motor_Glisiera_R.setPower(0);
+        MotorGlisieraL.setPower(0);
+        MotorGlisieraR.setPower(0);
+    }
+
+    protected void test_glisiera()
+    {
+        if (gamepad2.a) {
+            MotorGlisieraL.setPower(0.9);
+            MotorGlisieraR.setPower(0.9);
+        }
+        else if (gamepad2.b) {
+            MotorGlisieraL.setPower(-0.9);
+            MotorGlisieraR.setPower(-0.9);
+        }
+        else if (gamepad2.x) {
+            MotorGlisieraL.setPower(0.6);
+            MotorGlisieraR.setPower(0.6);
+        }
+        else if (gamepad2.y) {
+            MotorGlisieraL.setPower(-0.6);
+            MotorGlisieraR.setPower(-0.6);
+        }
+        else {
+            MotorGlisieraL.setPower(0);
+            MotorGlisieraR.setPower(0);
+        }
+
+        telemetry.addData("pozitie L: ", MotorGlisieraL.getCurrentPosition());
+        telemetry.addData("pozitie R: ", MotorGlisieraR.getCurrentPosition());
+        telemetry.update();
     }
 
     protected void stop_walk(){
-        Motor_FL.setPower(0);
-        Motor_FR.setPower(0);
-        Motor_BL.setPower(0);
-        Motor_BR.setPower(0);
+        MotorFL.setPower(0);
+        MotorFR.setPower(0);
+        MotorBL.setPower(0);
+        MotorBR.setPower(0);
     }
 
     protected void calculateWheelsPower ( double drive, double strafe, double rotate )
@@ -133,10 +216,10 @@ public class Driver_Mode extends LinearOpMode {
         double BL = Range.clip(drive + strafe + rotate , -0.7 , 0.7);
         double BR = Range.clip(drive - strafe - rotate , -0.7 , 0.7);
 
-        Motor_FL.setPower(FL);
-        Motor_FR.setPower(FR);
-        Motor_BL.setPower(BL);
-        Motor_BR.setPower(BR);
+        MotorFL.setPower(FL);
+        MotorFR.setPower(FR);
+        MotorBL.setPower(BL);
+        MotorBR.setPower(BR);
     }
 
 }
